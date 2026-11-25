@@ -1,0 +1,42 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="head">
+    <h1>{{ product.name }}</h1>
+    <div class="actions">
+        <a class="btn gray" href="{{ url_for('product_edit', id=product.id) }}">Редагувати</a>
+        <form method="post" action="{{ url_for('product_delete', id=product.id) }}"
+              onsubmit="return confirm('Видалити товар?')">
+            <button class="btn red">Видалити</button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <p><b>Категорія:</b> {{ product.category }}</p>
+    <p><b>Ціна:</b> {{ "{:,.2f}".format(product.price).replace(",", " ").replace(".", ",") }} ₴</p>
+    <p><b>На складі:</b> {{ product.stock }} шт.</p>
+</div>
+
+<h2>Історія цін</h2>
+<table>
+    <tr>
+        <th>Дата</th>
+        <th>Була</th>
+        <th>Стала</th>
+    </tr>
+    {% for h in history %}
+    <tr>
+        <td>{{ h.changed_at.strftime('%d.%m.%Y %H:%M') }}</td>
+        <td>{{ "{:,.2f}".format(h.old_price).replace(",", " ").replace(".", ",") }} ₴</td>
+        <td>{{ "{:,.2f}".format(h.new_price).replace(",", " ").replace(".", ",") }} ₴</td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="3">Ціна ще не змінювалась</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a class="btn gray back" href="{{ url_for('products_list') }}">До списку</a>
+{% endblock %}

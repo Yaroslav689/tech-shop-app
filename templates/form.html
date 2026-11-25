@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="head">
+    <h1>{{ 'Редагування товару' if product.id else 'Новий товар' }}</h1>
+</div>
+<form method="post" class="card form">
+    <label>Назва
+        <input name="name" value="{{ product.name or '' }}" required>
+    </label>
+    <label>Категорія
+        <select name="category_id" required>
+            {% for c in categories %}
+            <option value="{{ c.id }}" {% if product.category_id == c.id %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <label>Ціна ₴
+        <input type="number" name="price" step="0.01" min="0" value="{{ product.price or '' }}" required>
+    </label>
+    <label>Кількість на складі
+        <input type="number" name="stock" min="0" value="{{ product.stock if product.stock is not none else 0 }}" required>
+    </label>
+    <div class="actions">
+        <button class="btn">Зберегти</button>
+    </div>
+</form>
+<a class="btn gray back" href="{{ url_for('products_list') }}">До списку</a>
+{% endblock %}

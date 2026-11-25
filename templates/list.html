@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="head">
+    <h1>Товари</h1>
+    <a class="btn" href="{{ url_for('product_create') }}">+ Новий товар</a>
+</div>
+
+<table>
+    <tr>
+        <th>Назва</th>
+        <th>Категорія</th>
+        <th>Ціна</th>
+        <th>На складі</th>
+    </tr>
+    {% for p in products %}
+    <tr>
+        <td><a href="{{ url_for('product_detail', id=p.id) }}">{{ p.name }}</a></td>
+        <td>{{ p.category }}</td>
+        <td>{{ "{:,.2f}".format(p.price).replace(",", " ").replace(".", ",") }} ₴</td>
+        <td>{{ p.stock }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
